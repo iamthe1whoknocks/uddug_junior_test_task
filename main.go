@@ -9,8 +9,9 @@ import (
 )
 
 var (
-	errUnknownInterval = errors.New("Unknown interval provided, allowed intervals are : month, week, day, hour")
-	errEmptyInput      = errors.New("Empty input provided")
+	errUnknownInterval       = errors.New("Unknown interval provided, allowed intervals are : month, week, day, hour")
+	errEmptyTransactionInput = errors.New("Empty transaction input provided")
+	errEmptyIntervalInput    = errors.New("Empty interval input provided")
 )
 
 // Transaction is user transaction in exchange
@@ -58,8 +59,12 @@ func formatGraphs(transactions []*Transaction, intervalStr string) (
 	[]*Transaction,
 	error) {
 	if transactions == nil {
-		return nil, errEmptyInput
+		return nil, errEmptyTransactionInput
 	}
+	if intervalStr == "" {
+		return nil, errEmptyIntervalInput
+	}
+
 	interval, err := translateInterval(strings.ToLower(intervalStr))
 	if err != nil {
 		return nil, err

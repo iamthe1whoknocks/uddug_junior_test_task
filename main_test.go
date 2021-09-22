@@ -119,12 +119,48 @@ func TestFormatGraphsErrorUnknownInterval(t *testing.T) {
 
 }
 
-func TestFormatGraphsErrorEmptyInput(t *testing.T) {
+func TestFormatGraphsErrorEmptyTransactionInput(t *testing.T) {
 	test := &testCase{
 		Transactions: nil,
 		Result:       nil,
 		Interval:     "day",
-		Err:          errEmptyInput,
+		Err:          errEmptyTransactionInput,
+	}
+
+	_, err := formatGraphs(test.Transactions, test.Interval)
+	if err != test.Err {
+		t.Errorf("Expected error =  %v, got error =  %v", test.Err, err)
+	}
+}
+
+func TestFormatGraphsErrorEmptyIntervalInput(t *testing.T) {
+	transactions := []*Transaction{
+		{
+			4456,
+			1616026248,
+		},
+		{
+			4231,
+			1616022648,
+		},
+		{
+			5212,
+			1616019048,
+		},
+		{
+			4321,
+			1615889448,
+		},
+		{
+			4567,
+			1615871448,
+		},
+	}
+	test := &testCase{
+		Transactions: transactions,
+		Result:       nil,
+		Interval:     "",
+		Err:          errEmptyIntervalInput,
 	}
 
 	_, err := formatGraphs(test.Transactions, test.Interval)
